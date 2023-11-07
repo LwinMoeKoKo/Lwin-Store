@@ -1,0 +1,16 @@
+{
+    "name": "acer/cozastore",
+    "autoload": {
+        "psr-4": {
+            "Libs\\" : "admin/classes/Libs",
+            "Helpers\\" : "admin/classes/Helpers"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lwin Moe Ko Ko",
+            "email": "lmkklmkk05@gmail.com"
+        }
+    ],
+    "require": {}
+}
