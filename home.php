@@ -15,11 +15,11 @@ $auth = Auth::check();
 $table = new ProductsTable(new MySQL());
 $table1 = new CategoriesTable(new MySQL());
 
-if (isset($_POST['title'])) {
-  setcookie("title", $_POST['title'], time() + 86400, "/");
+if (isset($_POST['P_name'])) {
+  setcookie("P_name", $_POST['P_name'], time() + 86400, "/");
 } else {
   if (!isset($_GET['load'])) {
-    setcookie("title", "", time() - 1, "/");
+    setcookie("P_name", "", time() - 1, "/");
   }
 };
 
@@ -29,35 +29,34 @@ $token = $table->tokenCsrf();
 $allProducts = $table->getProductAll();
 
 $load = 1;
-if (!isset($_POST['title']) && !isset($_COOKIE['title'])) {
+if (!isset($_POST['P_name']) && !isset($_COOKIE['P_name'])) {
 	$allProducts = $table->getProductAll();
 	if (isset($_GET['load'])) {
 	  $load = $_GET['load'];
 	} else {
-	  global $pageN0;
+	  global $load;
 	  $load = 1;
 	}
-	$offset = 5 * $load;
+	$offset = 12 * $load;
 	$start = 0;
 	$totalPages = ceil(count($allProducts) / $offset);
 	
 	$limitProducts = $table->getProductsLimitWithCategory($start, $offset);
-}//  else {
-// 	$title = $_POST['title'] ?? $_COOKIE['title'];
-// 	if (isset($_GET['pageNo'])) {
-// 	  $pageN0 = $_GET['pageNo'];
-// 	} else {
-// 	  global $pageN0;
-// 	  $pageNO = 1;
-// 	}
-// 	$allProducts = $table->searchProduct($title);
-  
-// 	$offset = 10;
-// 	$start = ($pageN0 - 1) * $offset;
-// 	$totalPages = ceil(count($allProducts) / $offset);
-  
-// 	$limitProducts = $table->searchProductLimit($title, $start, $numOfRecords);
-//   }
+}  else {
+   $P_name = $_POST['P_name'] ?? $_COOKIE['P_name'];
+   if (isset($_GET['load'])) {
+	 $load = $_GET['load'];
+   } else {
+	 global $load;
+	 $load = 1;
+   }
+   $allProducts = $table->searchProductWithCategory($P_name);
+   $offset = 2 * $load;
+   $start = 0;
+   $totalPages = ceil(count($allProducts) / $offset);
+ 
+   $limitProducts = $table->searchProductLimitWithCategory($P_name, $start, $offset);
+ }
  
 
 
@@ -69,7 +68,6 @@ if (!isset($_POST['title']) && !isset($_COOKIE['title'])) {
 
 <!-- Mirrored from preview.colorlib.com/theme/cozastore/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Oct 2023 01:41:44 GMT -->
 <head>
-<title>Home</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -101,8 +99,9 @@ if (!isset($_POST['title']) && !isset($_COOKIE['title'])) {
 
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="admin/plugins/fontawesome-free/css/all.min.css">
 
-<script nonce="058126a7-81c1-4476-a935-85c37bf6bd98">(function(w,d){!function(bb,bc,bd,be){bb[bd]=bb[bd]||{};bb[bd].executed=[];bb.zaraz={deferred:[],listeners:[]};bb.zaraz.q=[];bb.zaraz._f=function(bf){return async function(){var bg=Array.prototype.slice.call(arguments);bb.zaraz.q.push({m:bf,a:bg})}};for(const bh of["track","set","debug"])bb.zaraz[bh]=bb.zaraz._f(bh);bb.zaraz.init=()=>{var bi=bc.getElementsByTagName(be)[0],bj=bc.createElement(be),bk=bc.getElementsByTagName("title")[0];bk&&(bb[bd].t=bc.getElementsByTagName("title")[0].text);bb[bd].x=Math.random();bb[bd].w=bb.screen.width;bb[bd].h=bb.screen.height;bb[bd].j=bb.innerHeight;bb[bd].e=bb.innerWidth;bb[bd].l=bb.location.href;bb[bd].r=bc.referrer;bb[bd].k=bb.screen.colorDepth;bb[bd].n=bc.characterSet;bb[bd].o=(new Date).getTimezoneOffset();if(bb.dataLayer)for(const bo of Object.entries(Object.entries(dataLayer).reduce(((bp,bq)=>({...bp[1],...bq[1]})),{})))zaraz.set(bo[0],bo[1],{scope:"page"});bb[bd].q=[];for(;bb.zaraz.q.length;){const br=bb.zaraz.q.shift();bb[bd].q.push(br)}bj.defer=!0;for(const bs of[localStorage,sessionStorage])Object.keys(bs||{}).filter((bu=>bu.startsWith("_zaraz_"))).forEach((bt=>{try{bb[bd]["z_"+bt.slice(7)]=JSON.parse(bs.getItem(bt))}catch{bb[bd]["z_"+bt.slice(7)]=bs.getItem(bt)}}));bj.referrerPolicy="origin";bj.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bb[bd])));bi.parentNode.insertBefore(bj,bi)};["complete","interactive"].includes(bc.readyState)?zaraz.init():bb.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
+<script nonce="058126a7-81c1-4476-a935-85c37bf6bd98">(function(w,d){!function(bb,bc,bd,be){bb[bd]=bb[bd]||{};bb[bd].executed=[];bb.zaraz={deferred:[],listeners:[]};bb.zaraz.q=[];bb.zaraz._f=function(bf){return async function(){var bg=Array.prototype.slice.call(arguments);bb.zaraz.q.push({m:bf,a:bg})}};for(const bh of["track","set","debug"])bb.zaraz[bh]=bb.zaraz._f(bh);bb.zaraz.init=()=>{var bi=bc.getElementsByTagName(be)[0],bj=bc.createElement(be),bk=bc.getElementsByTagName("P_name")[0];bk&&(bb[bd].t=bc.getElementsByTagName("P_name")[0].text);bb[bd].x=Math.random();bb[bd].w=bb.screen.width;bb[bd].h=bb.screen.height;bb[bd].j=bb.innerHeight;bb[bd].e=bb.innerWidth;bb[bd].l=bb.location.href;bb[bd].r=bc.referrer;bb[bd].k=bb.screen.colorDepth;bb[bd].n=bc.characterSet;bb[bd].o=(new Date).getTimezoneOffset();if(bb.dataLayer)for(const bo of Object.entries(Object.entries(dataLayer).reduce(((bp,bq)=>({...bp[1],...bq[1]})),{})))zaraz.set(bo[0],bo[1],{scope:"page"});bb[bd].q=[];for(;bb.zaraz.q.length;){const br=bb.zaraz.q.shift();bb[bd].q.push(br)}bj.defer=!0;for(const bs of[localStorage,sessionStorage])Object.keys(bs||{}).filter((bu=>bu.startsWith("_zaraz_"))).forEach((bt=>{try{bb[bd]["z_"+bt.slice(7)]=JSON.parse(bs.getItem(bt))}catch{bb[bd]["z_"+bt.slice(7)]=bs.getItem(bt)}}));bj.referrerPolicy="origin";bj.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bb[bd])));bi.parentNode.insertBefore(bj,bi)};["complete","interactive"].includes(bc.readyState)?zaraz.init():bb.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
 <body class="animsition">
 
 <header>
@@ -138,9 +137,21 @@ if (!isset($_POST['title']) && !isset($_COOKIE['title'])) {
 <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
 <i class="zmdi zmdi-search"></i>
 </div>
-<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+<?php 
+	$totalCart = 0;
+	if(isset($_SESSION['cart'])){
+		foreach($_SESSION['cart'] as $cart){
+			$totalCart += $cart;
+		}
+	}
+?>
+	  
+<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?= $totalCart  ?>">
 <i class="zmdi zmdi-shopping-cart"></i>
 </div>
+<a href="admin/actions/logout.php" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+<i class="zmdi zmdi-daydream-setting"></i>
+</a>
 </div>
 </nav>
 </div>
@@ -225,11 +236,11 @@ USD
 <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
 <img src="images/icons/icon-close2.png" alt="CLOSE">
 </button>
-<form class="wrap-search-header flex-w p-l-15">
+<form action="home.php" class="wrap-search-header flex-w p-l-15" method="post">
 <button class="flex-c-m trans-04">
 <i class="zmdi zmdi-search"></i>
 </button>
-<input class="plh3" type="text" name="search" placeholder="Search...">
+<input class="plh3" type="text" name="P_name" placeholder="Search...">
 </form>
 </div>
 </div>
@@ -238,7 +249,7 @@ USD
 <div class="wrap-header-cart js-panel-cart">
 <div class="s-full js-hide-cart"></div>
 <div class="header-cart flex-col-l p-l-65 p-r-25">
-<div class="header-cart-title flex-w flex-sb-m p-b-8">
+<div class="header-cart-P_name flex-w flex-sb-m p-b-8">
 <span class="mtext-103 cl2">
 Your Cart
 </span>
@@ -459,11 +470,15 @@ New Trend
 </button>
 <?php foreach($allCategories as $category): ?>
 	<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".<?= $category->name ?>">
-	   <?= $category->name ?>
+	<?= $category->name ?>
 	</button>
 <?php endforeach ?>
 </div>
 <div class="flex-w flex-c-m m-tb-10">
+<a href="home.php" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" >
+	All 
+</a>
+
 <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
 <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
 <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
@@ -472,14 +487,17 @@ Search
 </div>
 
 <div class="dis-none panel-search w-full p-t-10 p-b-15">
-<div class="bor8 dis-flex p-l-15">
-	<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-<i class="zmdi zmdi-search"></i>
-</button>
-<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+<form action="home.php" method="post">
+	<div class="bor8 dis-flex p-l-15">
+		<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+	<i class="zmdi zmdi-search"></i>
+	</button>
+	<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="P_name" placeholder="Search">
+	</div>
+</form>
 </div>
 </div>
-</div>
+
 
 <div class="row isotope-grid">
 
@@ -488,7 +506,7 @@ Search
 <div class="block2">
 <div class="block2-pic hov-img0">
 <img src="admin/actions/photos/<?= $product->image ?>" alt="IMG-PRODUCT">
-<a href="product-detail.html?id=<?= $product->id ?>" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+<a href="product-detail.php?id=<?= $product->id ?>" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
 Quick View
 </a>
 </div>

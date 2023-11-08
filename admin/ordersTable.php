@@ -28,7 +28,7 @@ $offset = 10;
 $start = ($pageN0-1) * $offset;
 $totalPages = ceil(count($allOrders) / $offset);
 
-$allOrdersLimit = $table1->getOrdersLimit($start,$offset);
+$allOrdersLimit =  $table1->getOrdersLimit($start,$offset);
 ?>
 
 <!DOCTYPE html>
@@ -71,31 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
 
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline" action="admin.php" method="post">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" name="title" type="search" placeholder="Search Product" aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-
-
-            </ul>
+           
         </nav>
         <!-- /.navbar -->
 

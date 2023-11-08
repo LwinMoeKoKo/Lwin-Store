@@ -1,3 +1,20 @@
+<?php
+include("vendor/autoload.php");
+
+use Helpers\Auth;
+use Libs\Database\MySQL;
+use Libs\Database\ProductsTable;
+
+$auth = Auth::check();
+$table = new ProductsTable(new MySQL());
+
+$id = $_GET['id'];
+
+$product = $table->getProduct($id);
+
+$token = $table->tokenCsrf();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,34 +53,13 @@
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
-<script nonce="a12df3f9-f69f-4f8b-ac1d-b70665d6c54e">(function(w,d){!function(bb,bc,bd,be){bb[bd]=bb[bd]||{};bb[bd].executed=[];bb.zaraz={deferred:[],listeners:[]};bb.zaraz.q=[];bb.zaraz._f=function(bf){return async function(){var bg=Array.prototype.slice.call(arguments);bb.zaraz.q.push({m:bf,a:bg})}};for(const bh of["track","set","debug"])bb.zaraz[bh]=bb.zaraz._f(bh);bb.zaraz.init=()=>{var bi=bc.getElementsByTagName(be)[0],bj=bc.createElement(be),bk=bc.getElementsByTagName("title")[0];bk&&(bb[bd].t=bc.getElementsByTagName("title")[0].text);bb[bd].x=Math.random();bb[bd].w=bb.screen.width;bb[bd].h=bb.screen.height;bb[bd].j=bb.innerHeight;bb[bd].e=bb.innerWidth;bb[bd].l=bb.location.href;bb[bd].r=bc.referrer;bb[bd].k=bb.screen.colorDepth;bb[bd].n=bc.characterSet;bb[bd].o=(new Date).getTimezoneOffset();if(bb.dataLayer)for(const bo of Object.entries(Object.entries(dataLayer).reduce(((bp,bq)=>({...bp[1],...bq[1]})),{})))zaraz.set(bo[0],bo[1],{scope:"page"});bb[bd].q=[];for(;bb.zaraz.q.length;){const br=bb.zaraz.q.shift();bb[bd].q.push(br)}bj.defer=!0;for(const bs of[localStorage,sessionStorage])Object.keys(bs||{}).filter((bu=>bu.startsWith("_zaraz_"))).forEach((bt=>{try{bb[bd]["z_"+bt.slice(7)]=JSON.parse(bs.getItem(bt))}catch{bb[bd]["z_"+bt.slice(7)]=bs.getItem(bt)}}));bj.referrerPolicy="origin";bj.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bb[bd])));bi.parentNode.insertBefore(bj,bi)};["complete","interactive"].includes(bc.readyState)?zaraz.init():bb.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
+<script nonce="a12df3f9-f69f-4f8b-ac1d-b70665d6c54e">(function(w,d){!function(bb,bc,bd,be){bb[bd]=bb[bd]||{};bb[bd].executed=[];bb.zaraz={deferred:[],listeners:[]};bb.zaraz.q=[];bb.zaraz._f=function(bf){return async function(){var bg=Array.prototype.slice.call(arguments);bb.zaraz.q.push({m:bf,a:bg})}};for(const bh of["track","set","debug"])bb.zaraz[bh]=bb.zaraz._f(bh);bb.zaraz.init=()=>{var bi=bc.getElementsByTagName(be),bj=bc.createElement(be),bk=bc.getElementsByTagName("title");bk&&(bb[bd].t=bc.getElementsByTagName("title").text);bb[bd].x=Math.random();bb[bd].w=bb.screen.width;bb[bd].h=bb.screen.height;bb[bd].j=bb.innerHeight;bb[bd].e=bb.innerWidth;bb[bd].l=bb.location.href;bb[bd].r=bc.referrer;bb[bd].k=bb.screen.colorDepth;bb[bd].n=bc.characterSet;bb[bd].o=(new Date).getTimezoneOffset();if(bb.dataLayer)for(const bo of Object.entries(Object.entries(dataLayer).reduce(((bp,bq)=>({...bp[1],...bq[1]})),{})))zaraz.set(bo,bo[1],{scope:"page"});bb[bd].q=[];for(;bb.zaraz.q.length;){const br=bb.zaraz.q.shift();bb[bd].q.push(br)}bj.defer=!0;for(const bs of[localStorage,sessionStorage])Object.keys(bs||{}).filter((bu=>bu.startsWith("_zaraz_"))).forEach((bt=>{try{bb[bd]["z_"+bt.slice(7)]=JSON.parse(bs.getItem(bt))}catch{bb[bd]["z_"+bt.slice(7)]=bs.getItem(bt)}}));bj.referrerPolicy="origin";bj.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bb[bd])));bi.parentNode.insertBefore(bj,bi)};["complete","interactive"].includes(bc.readyState)?zaraz.init():bb.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
 <body class="animsition">
 
 <header class="header-v4">
 
 <div class="container-menu-desktop">
 
-<div class="top-bar">
-<div class="content-topbar flex-sb-m h-full container">
-<div class="left-top-bar">
-Free shipping for standard order over $100
-</div>
-<div class="right-top-bar flex-w h-full">
-<a href="#" class="flex-c-m trans-04 p-lr-25">
-Help & FAQs
-</a>
-<a href="#" class="flex-c-m trans-04 p-lr-25">
-My Account
-</a>
-<a href="#" class="flex-c-m trans-04 p-lr-25">
-EN
-</a>
-<a href="#" class="flex-c-m trans-04 p-lr-25">
-USD
-</a>
-</div>
-</div>
-</div>
 <div class="wrap-menu-desktop how-shadow1">
 <nav class="limiter-menu-desktop container">
 
@@ -74,16 +70,10 @@ USD
 <div class="menu-desktop">
 <ul class="main-menu">
 <li>
-<a href="index.php">Home</a>
+<a href="home.php">Home</a>
 </li>
 <li>
 <a href="product.html">Shop</a>
-</li>
-<li class="label1" data-label1="hot">
-<a href="shoping-cart.html">Features</a>
-</li>
-<li>
-<a href="blog.html">Blog</a>
 </li>
 <li>
 <a href="about.html">About</a>
@@ -280,11 +270,11 @@ Home
 <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 </a>
 <a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
-Men
+<?= $table->h($product->c_name) ?>
 <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 </a>
 <span class="stext-109 cl4">
-Lightweight Jacket
+<?= $table->h($product->name) ?>
 </span>
 </div>
 </div>
@@ -298,10 +288,10 @@ Lightweight Jacket
 <div class="wrap-slick3-dots"></div>
 <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 <div class="slick3 gallery-lb">
-<div class="item-slick3" data-thumb="images/product-detail-01.jpg">
+<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product->image) ?>">
 <div class="wrap-pic-w pos-relative">
-<img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
-<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
+<img src="admin/actions/photos/<?= $table->h($product->image) ?>" alt="IMG-PRODUCT">
+<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product->image) ?>">
 <i class="fa fa-expand"></i>
 </a>
 </div>
@@ -329,89 +319,100 @@ Lightweight Jacket
 <div class="col-md-6 col-lg-5 p-b-30">
 <div class="p-r-50 p-t-5 p-lr-0-lg">
 <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-Lightweight Jacket
+<?= $table->h($product->name)  ?>
 </h4>
 <span class="mtext-106 cl2">
-$58.79
+$<?= $table->h($product->price) ?>
 </span>
 <p class="stext-102 cl3 p-t-23">
-Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.
+	<?= $table->h($product->description) ?>
 </p>
+<?php if(isset($_GET['notEnough'])): ?>
+	<div class="alert alert-danger text-center text-capitalize">Item is not enough.</div>
+<?php endif ?>
+<form action="actions/addCart.php" method="post">
+	<div class="mt-1">
+		<div class="flex-w flex-r-m p-b-10">
+			<div class="size-203 flex-c-m respon6">
+				Size
+			</div>
+			<div class="size-204 respon6-next">
+				<div class="rs1-select2 bor8 bg0">
+					<select class="js-select2" name="time">
+						<option>Choose an option</option>
+						<option>Size S</option>
+						<option>Size M</option>
+						<option>Size L</option>
+						<option>Size XL</option>
+					</select>
+					<div class="dropDownSelect2"></div>
+				</div>
+			</div>
+		</div>
+		<div class="flex-w flex-r-m p-b-10">
+			<div class="size-203 flex-c-m respon6">
+				Color
+			</div>
+			<div class="size-204 respon6-next">
+				<div class="rs1-select2 bor8 bg0">
+					<select class="js-select2" name="time">
+						<option>Choose an option</option>
+						<option>Red</option>
+						<option>Blue</option>
+						<option>White</option>
+						<option>Grey</option>
+					</select>
+					<div class="dropDownSelect2"></div>
+				</div>
+			</div>
+		</div>
+		<div class="flex-w flex-r-m p-b-10">
+			<div class="size-204 flex-w flex-m respon6-next">
+				<div class="wrap-num-product flex-w m-r-20 m-tb-10">
+					<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+						<i class="fs-16 zmdi zmdi-minus"></i>
+				</div>
+				<input class="mtext-104 cl3 txt-center num-product" type="number" name="cart" value="1">
+				<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+					<i class="fs-16 zmdi zmdi-plus"></i>
+				</div>
+			</div>
+				<input type="hidden" name="id" value="<?= $product->id  ?>">
+				<input type="hidden" name="token" value="<?= $token  ?>">
+				<button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+					Add to cart
+				</button>
+				<a href="home.php" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15  mt-3">
+					Back
+				</a>
+			</div>
+		</div>
+	</div>
+</form>
 
-<div class="p-t-33">
-<div class="flex-w flex-r-m p-b-10">
-<div class="size-203 flex-c-m respon6">
-Size
-</div>
-<div class="size-204 respon6-next">
-<div class="rs1-select2 bor8 bg0">
-<select class="js-select2" name="time">
-<option>Choose an option</option>
-<option>Size S</option>
-<option>Size M</option>
-<option>Size L</option>
-<option>Size XL</option>
-</select>
-<div class="dropDownSelect2"></div>
-</div>
-</div>
-</div>
-<div class="flex-w flex-r-m p-b-10">
-<div class="size-203 flex-c-m respon6">
-Color
-</div>
-<div class="size-204 respon6-next">
-<div class="rs1-select2 bor8 bg0">
-<select class="js-select2" name="time">
-<option>Choose an option</option>
-<option>Red</option>
-<option>Blue</option>
-<option>White</option>
-<option>Grey</option>
-</select>
-<div class="dropDownSelect2"></div>
-</div>
-</div>
-</div>
-<div class="flex-w flex-r-m p-b-10">
-<div class="size-204 flex-w flex-m respon6-next">
-<div class="wrap-num-product flex-w m-r-20 m-tb-10">
-<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-<i class="fs-16 zmdi zmdi-minus"></i>
-</div>
-<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
-<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-<i class="fs-16 zmdi zmdi-plus"></i>
-</div>
-</div>
-<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-Add to cart
-</button>
-</div>
-</div>
-</div>
+
 
 <div class="flex-w flex-m p-l-100 p-t-40 respon7">
-<div class="flex-m bor9 p-r-10 m-r-11">
-<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-<i class="zmdi zmdi-favorite"></i>
-</a>
-</div>
-<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
-<i class="fa fa-facebook"></i>
-</a>
-<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
-<i class="fa fa-twitter"></i>
-</a>
-<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
-<i class="fa fa-google-plus"></i>
-</a>
+	<div class="flex-m bor9 p-r-10 m-r-11">
+		<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+			<i class="zmdi zmdi-favorite"></i>
+		</a>
+	</div>
+	<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
+		<i class="fa fa-facebook"></i>
+	</a>
+	<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
+		<i class="fa fa-twitter"></i>
+	</a>
+	<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
+		<i class="fa fa-google-plus"></i>
+	</a>
 </div>
 </div>
 </div>
 </div>
 <div class="bor10 m-t-50 p-t-43 p-b-40">
-
+	
 <div class="tab01">
 
 <ul class="nav nav-tabs" role="tablist">
@@ -420,9 +421,6 @@ Add to cart
 </li>
 <li class="nav-item p-b-10">
 <a class="nav-link" data-toggle="tab" href="#information" role="tab">Additional information</a>
-</li>
-<li class="nav-item p-b-10">
-<a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Reviews (1)</a>
 </li>
 </ul>
 
@@ -513,44 +511,6 @@ Quod autem in homine praestantissimum atque optimum est, id deseruit. Apud ceter
 </div>
 </div>
 
-<form class="w-full">
-<h5 class="mtext-108 cl2 p-b-7">
-Add a review
-</h5>
-<p class="stext-102 cl6">
-Your email address will not be published. Required fields are marked *
-</p>
-<div class="flex-w flex-m p-t-50 p-b-23">
-<span class="stext-102 cl3 m-r-16">
-Your Rating
-</span>
-<span class="wrap-rating fs-18 cl11 pointer">
-<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-<input class="dis-none" type="number" name="rating">
-</span>
-</div>
-<div class="row p-b-25">
-<div class="col-12 p-b-5">
-<label class="stext-102 cl3" for="review">Your review</label>
-<textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
-</div>
-<div class="col-sm-6 p-b-5">
-<label class="stext-102 cl3" for="name">Name</label>
-<input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name">
-</div>
-<div class="col-sm-6 p-b-5">
-<label class="stext-102 cl3" for="email">Email</label>
-<input class="size-111 bor8 stext-102 cl2 p-lr-20" id="email" type="text" name="email">
-</div>
-</div>
-<button class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
-Submit
-</button>
-</form>
 </div>
 </div>
 </div>
@@ -1026,7 +986,7 @@ Color
 <i class="fs-16 zmdi zmdi-plus"></i>
 </div>
 </div>
-<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-0 js-addcart">
 Add to cart
 </button>
 </div>
@@ -1034,12 +994,12 @@ Add to cart
 </div>
 
 <div class="flex-w flex-m p-l-100 p-t-40 respon7">
-<div class="flex-m bor9 p-r-10 m-r-11">
-<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-<i class="zmdi zmdi-favorite"></i>
-</a>
-</div>
-<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
+	<div class="flex-m bor9 p-r-10 m-r-11">
+		<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+			<i class="zmdi zmdi-favorite"></i>
+		</a>
+	</div>
+	<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
 <i class="fa fa-facebook"></i>
 </a>
 <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
