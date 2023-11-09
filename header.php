@@ -1,3 +1,11 @@
+<?php
+include("vendor/autoload.php");
+
+use Libs\Database\MySQL;
+use Libs\Database\ProductsTable;
+
+$table = new ProductsTable(new MySQL());
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +13,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <link rel="icon" type="image/png" href="images/icons/favicon.png" />
 
 <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -34,8 +41,13 @@
 
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<link rel="stylesheet" type="text/css" href="admin/plugins/fontawesome-free/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="">
+<link rel="stylesheet" type="text/css" href="admin/dist/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="admin/plugins/fontawesome-free/css/all.css">
+<style>
+	a{
+		text-decoration: none !important;
+	}
+</style>
 
 <script nonce="058126a7-81c1-4476-a935-85c37bf6bd98">(function(w,d){!function(bb,bc,bd,be){bb[bd]=bb[bd]||{};bb[bd].executed=[];bb.zaraz={deferred:[],listeners:[]};bb.zaraz.q=[];bb.zaraz._f=function(bf){return async function(){var bg=Array.prototype.slice.call(arguments);bb.zaraz.q.push({m:bf,a:bg})}};for(const bh of["track","set","debug"])bb.zaraz[bh]=bb.zaraz._f(bh);bb.zaraz.init=()=>{var bi=bc.getElementsByTagName(be)[0],bj=bc.createElement(be),bk=bc.getElementsByTagName("P_name")[0];bk&&(bb[bd].t=bc.getElementsByTagName("P_name")[0].text);bb[bd].x=Math.random();bb[bd].w=bb.screen.width;bb[bd].h=bb.screen.height;bb[bd].j=bb.innerHeight;bb[bd].e=bb.innerWidth;bb[bd].l=bb.location.href;bb[bd].r=bc.referrer;bb[bd].k=bb.screen.colorDepth;bb[bd].n=bc.characterSet;bb[bd].o=(new Date).getTimezoneOffset();if(bb.dataLayer)for(const bo of Object.entries(Object.entries(dataLayer).reduce(((bp,bq)=>({...bp[1],...bq[1]})),{})))zaraz.set(bo[0],bo[1],{scope:"page"});bb[bd].q=[];for(;bb.zaraz.q.length;){const br=bb.zaraz.q.shift();bb[bd].q.push(br)}bj.defer=!0;for(const bs of[localStorage,sessionStorage])Object.keys(bs||{}).filter((bu=>bu.startsWith("_zaraz_"))).forEach((bt=>{try{bb[bd]["z_"+bt.slice(7)]=JSON.parse(bs.getItem(bt))}catch{bb[bd]["z_"+bt.slice(7)]=bs.getItem(bt)}}));bj.referrerPolicy="origin";bj.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bb[bd])));bi.parentNode.insertBefore(bj,bi)};["complete","interactive"].includes(bc.readyState)?zaraz.init():bb.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
 <body class="animsition">
@@ -163,58 +175,43 @@ Your Cart
 </div>
 <div class="header-cart-content flex-w js-pscroll">
 <ul class="header-cart-wrapitem w-full">
-<li class="header-cart-item flex-w flex-t m-b-12">
-<div class="header-cart-item-img">
-<img src="images/item-cart-01.jpg" alt="IMG">
-</div>
-<div class="header-cart-item-txt p-t-8">
-<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-White Shirt Pleat
-</a>
-<span class="header-cart-item-info">
-1 x $19.00
-</span>
-</div>
-</li>
-<li class="header-cart-item flex-w flex-t m-b-12">
-<div class="header-cart-item-img">
-<img src="images/item-cart-02.jpg" alt="IMG">
-</div>
-<div class="header-cart-item-txt p-t-8">
-<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-Converse All Star
-</a>
-<span class="header-cart-item-info">
-1 x $39.00
-</span>
-</div>
-</li>
-<li class="header-cart-item flex-w flex-t m-b-12">
-<div class="header-cart-item-img">
-<img src="images/item-cart-03.jpg" alt="IMG">
-</div>
-<div class="header-cart-item-txt p-t-8">
-<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-Nixon Porter Leather
-</a>
-<span class="header-cart-item-info">
-1 x $17.00
-</span>
-</div>
-</li>
+  <?php if(isset($_SESSION['cart'])) : ?>
+	<?php 
+		$totalPrice = 0;
+		foreach($_SESSION['cart'] as $idKey => $cart) :
+			$id = substr($idKey,3,4);
+
+			$product = $table->getProduct($id);
+			$totalPrice += $product->price * $cart;
+	 ?>
+  <li class="header-cart-item flex-w flex-t m-b-12">
+	  <div class="header-cart-item-img">
+		  <img src="admin/actions/photos/<?= $product->image ?>" alt="IMG">
+		</div>
+		<div class="header-cart-item-txt p-t-8">
+			<a href="product-detail.php?id=<?= $product->id ?>" class="header-cart-item-name m-b-18 hov-cl1 trans-04 text-decoration-none">
+				<?= $product->name ?>
+			</a>
+			<span class="header-cart-item-info">
+			<?= $cart ?> x $<?= $product->price ?>
+			</span>
+		</div>
+	</li>
+	<?php endforeach ?>
+	<?php endif ?>
 </ul>
 <div class="w-full">
-<div class="header-cart-total w-full p-tb-40">
-Total: $75.00
-</div>
-<div class="header-cart-buttons flex-w w-full">
-<a href="shopping-cart.php" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
-View Cart
-</a>
-<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-Check Out
-</a>
-</div>
+	<div class="header-cart-total w-full p-tb-40 text-center">
+		Total:  $<?= $totalPrice ?? 0 ?>
+	</div>
+	<div class="header-cart-buttons flex-w w-full">
+		<a href="shopping-cart.php" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10 text-decoration-none">
+			View Cart
+		</a>
+		<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10 text-decoration-none">
+			Check Out
+		</a>
+	</div>
 </div>
 </div>
 </div>

@@ -15,26 +15,23 @@ $table = new ProductsTable(new MySQL());
 if($_POST){
     $id = $_POST['id'];
     $cartQuantity = $_POST['cart'];
-    $token = $_POST['token'];
+    $csrf = $_POST['csrf'];
     
     $product = $table->checkQuantity($id);
     $quantity = $product->quantity;
-    
-    
-    if($quantity >= $cartQuantity){  
-        $table->tokenCheck($token);
-        if(!isset($_SESSION['cart']['id='.$id])){
-            $_SESSION['cart']['id='.$id] += $cartQuantity;
-        } else {
-            $_SESSION['cart']['id='.$id] = $cartQuantity;
+
+    if($quantity > $cartQuantity){
+        if(isset($_SESSION['cart']["id=$id"])){
+            $_SESSION['cart']["id=$id"] += $cartQuantity;
+        } else{
+            $_SESSION['cart']["id=$id"] = $cartQuantity;
         }
-        HTTP::redirect("product-detail.php","id=$id");
+        HTTP::redirect("home.php");
     } else {
         HTTP::redirect("product-detail.php","notEnough=true&id=$id");
     }
-    
 }
-
+        
 
 
 
