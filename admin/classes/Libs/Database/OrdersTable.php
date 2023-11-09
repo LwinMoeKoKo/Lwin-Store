@@ -46,4 +46,35 @@ class OrdersTable{
             echo $e->getMessage();
         }
     }
+
+    public function addOrder($user_id,$total_price){
+        try {
+            $query = "INSERT INTO sale_orders(user_id, total_price) VALUES (:user_id, :total_price);";
+            $statement = $this->db->prepare($query);
+            $statement->execute([
+                ':user_id' => $user_id,
+                ':total_price' => $total_price,
+            ]);
+            $row = $this->db->lastInsertId();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function addOrderDetail($sale_order_id,$product_id,$quantity){
+        try {
+            $query = "INSERT INTO sale_orders_details(sale_order_id, product_id, quantity) VALUES (:sale_order_id, :product_id, :quantity);";
+            $statement = $this->db->prepare($query);
+            $statement->execute([
+                ':sale_order_id' => $sale_order_id,
+                ':product_id' => $product_id,
+                ':quantity' => $quantity,
+            ]);
+            $row = $this->db->lastInsertId();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
 }

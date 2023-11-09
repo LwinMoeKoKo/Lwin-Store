@@ -37,7 +37,7 @@ class ProductsTable{
 
     public function getProductsLimitWithCategory($start,$offset){
         try {
-            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description  FROM `products` LEFT JOIN categories ON products.category_id = categories.id LIMIT $start,$offset;";
+            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description  FROM `products` LEFT JOIN categories ON products.category_id = categories.id WHERE products.quantity > 0 LIMIT $start,$offset;";
             $statement = $this->db->prepare($query);
             $statement->execute();
             return $statement->fetchAll() ?? false;
@@ -48,7 +48,7 @@ class ProductsTable{
 
     public function getProductAll(){
         try {
-            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description  FROM `products` LEFT JOIN categories ON products.category_id = categories.id;";
+            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description  FROM `products` LEFT JOIN categories ON products.category_id = categories.id  WHERE products.quantity > 0;";
             $statement = $this->db->prepare($query);
             $statement->execute();
             return $statement->fetchAll() ?? false;
@@ -78,6 +78,22 @@ class ProductsTable{
             $statement->execute($data);
 
             $row = $this->db->lastInsertId();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function updateProductQuantity($quantity,$id){
+        try {
+            $query = "UPDATE products SET quantity = :quantity WHERE id = :id;";
+            $statement = $this->db->prepare($query);
+            $statement->execute([
+                ':quantity' =>$quantity,
+                ':id' => $id,
+            ]);
+
+            $row = $statement->rowCount();
             return $row ?? false;
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -114,7 +130,7 @@ class ProductsTable{
 
     public function searchProduct($name){
         try {
-            $query = "SELECT * FROM products WHERE name LIKE :name ORDER BY id DESC;";
+            $query = "SELECT * FROM products WHERE name LIKE :name AND quantity > 0 ORDER BY id DESC;";
             $statement = $this->db->prepare($query);
             $statement->execute([
                 ':name' => "%$name%",
@@ -129,7 +145,7 @@ class ProductsTable{
 
     public function searchProductWithCategory($name){
         try {
-            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description  FROM `products` LEFT JOIN categories ON products.category_id = categories.id WHERE products.name LIKE :name ORDER BY id DESC;";
+            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description FROM `products` LEFT JOIN categories ON products.category_id = categories.id WHERE products.name LIKE :name AND quantity > 0 ORDER BY id DESC;";
             $statement = $this->db->prepare($query);
             $statement->execute([
                 ':name' => "%$name%",
@@ -159,7 +175,7 @@ class ProductsTable{
 
     public function searchProductLimitWithCategory($name,$start,$offset){
         try {
-            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description FROM `products` LEFT JOIN categories ON products.category_id = categories.id WHERE products.name LIKE :name ORDER BY id ASC LIMIT $start,$offset;";
+            $query = "SELECT products.*, categories.name as c_name, categories.description as c_description FROM `products` LEFT JOIN categories ON products.category_id = categories.id WHERE products.name LIKE :name AND quantity > 0  ORDER BY id ASC LIMIT $start,$offset;";
             $statement = $this->db->prepare($query);
             $statement->execute([
                 ':name' => "%$name%",

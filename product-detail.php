@@ -10,9 +10,15 @@ $table = new ProductsTable(new MySQL());
 
 $id = $_GET['id'];
 
-$product = $table->getProduct($id);
+$product1 = $table->getProduct($id);
 
 $token = $table->tokenCsrf();
+// print "<pre>";
+// print_r($product1);
+// print_r($product1->image);
+// exit();    
+
+
 ?>
 
 <?php include("header.php") ?>
@@ -27,26 +33,26 @@ $token = $table->tokenCsrf();
 <div class="wrap-slick3-dots"></div>
 <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 <div class="slick3 gallery-lb">
-<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product->image) ?>">
+<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <div class="wrap-pic-w pos-relative">
-<img src="admin/actions/photos/<?= $table->h($product->image) ?>" alt="IMG-PRODUCT">
-<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product->image) ?>">
+<img src="admin/actions/photos/<?= $table->h($product1->image) ?>" alt="IMG-PRODUCT">
+<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <i class="fa fa-expand"></i>
 </a>
 </div>
 </div>
-<div class="item-slick3" data-thumb="images/product-detail-02.jpg">
+<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <div class="wrap-pic-w pos-relative">
-<img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
-<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-02.jpg">
+<img src="admin/actions/photos/<?= $table->h($product1->image) ?>" alt="IMG-PRODUCT">
+<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <i class="fa fa-expand"></i>
 </a>
 </div>
 </div>
-<div class="item-slick3" data-thumb="images/product-detail-03.jpg">
+<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <div class="wrap-pic-w pos-relative">
-<img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
-<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-03.jpg">
+<img src="admin/actions/photos/<?= $table->h($product1->image) ?>" alt="IMG-PRODUCT">
+<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <i class="fa fa-expand"></i>
 </a>
 </div>
@@ -58,13 +64,13 @@ $token = $table->tokenCsrf();
 <div class="col-md-6 col-lg-5 p-b-30">
 <div class="p-r-50 p-t-5 p-lr-0-lg">
 <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-<?= $table->h($product->name)  ?>
+<?= $table->h($product1->name)  ?>
 </h4>
 <span class="mtext-106 cl2">
-$<?= $table->h($product->price) ?>
+$<?= $table->h($product1->price) ?>
 </span>
 <p class="stext-102 cl3 p-t-23" class="mb-2">
-	<?= $table->h($product->description) ?>
+	<?= $table->h($product1->description) ?>
 </p>
 <?php if(isset($_GET['notEnough'])): ?>
 	<div class="alert alert-danger text-center text-capitalize"  class="mb-2">Item is not enough.</div>
@@ -116,7 +122,7 @@ $<?= $table->h($product->price) ?>
 					<i class="fs-16 zmdi zmdi-plus"></i>
 				</div>
 			</div>
-				<input type="hidden" name="id" value="<?= $product->id  ?>">
+				<input type="hidden" name="id" value="<?= $product1->id  ?>">
 				<input type="hidden" name="token" value="<?= $token  ?>">
 				<button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
 					Add to cart
@@ -647,18 +653,18 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 </a>
 </div>
 </div>
-<div class="item-slick3" data-thumb="images/product-detail-02.jpg">
+<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <div class="wrap-pic-w pos-relative">
-<img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
-<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-02.jpg">
+<img src="admin/actions/photos/<?= $table->h($product1->image) ?>" alt="IMG-PRODUCT">
+<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <i class="fa fa-expand"></i>
 </a>
 </div>
 </div>
-<div class="item-slick3" data-thumb="images/product-detail-03.jpg">
+<div class="item-slick3" data-thumb="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <div class="wrap-pic-w pos-relative">
-<img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
-<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-03.jpg">
+<img src="admin/actions/photos/<?= $table->h($product1->image) ?>" alt="IMG-PRODUCT">
+<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="admin/actions/photos/<?= $table->h($product1->image) ?>">
 <i class="fa fa-expand"></i>
 </a>
 </div>

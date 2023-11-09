@@ -37,7 +37,7 @@ if (!isset($_POST['P_name']) && !isset($_COOKIE['P_name'])) {
 	  global $load;
 	  $load = 1;
 	}
-	$offset = 12 * $load;
+	$offset = 24 * $load;
 	$start = 0;
 	$totalPages = ceil(count($allProducts) / $offset);
 	
@@ -51,7 +51,7 @@ if (!isset($_POST['P_name']) && !isset($_COOKIE['P_name'])) {
 	 $load = 1;
    }
    $allProducts = $table->searchProductWithCategory($P_name);
-   $offset = 2 * $load;
+   $offset = 24 * $load;
    $start = 0;
    $totalPages = ceil(count($allProducts) / $offset);
  
