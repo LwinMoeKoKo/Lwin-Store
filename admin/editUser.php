@@ -245,6 +245,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </ul>
             </li>
             <li class="nav-item">
+              <a href="weekly_report.php" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>Reports</p>
+                <i class="fas fa-angle-left right"></i>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="weekly_report.php" class="nav-link">
+                    <i class="nav-icon fas fa-sort-amount-up"></i>
+                    <p>Weekly Report</p>
+                  </a>
+                <li class="nav-item">
+                  <a href="monthly_report.php" class="nav-link">
+                    <i class="nav-icon fas fa-jedi"></i>
+                    <p>Monthly Report</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="top_customer.php" class="nav-link">
+                    <i class="nav-icon fas fa-heart"></i>
+                    <p>Platinum Members</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="best_seller.php" class="nav-link">
+                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                    <p>Best Seller</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
               <a href="actions/logout.php" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p>

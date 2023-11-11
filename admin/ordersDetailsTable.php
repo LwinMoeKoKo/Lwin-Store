@@ -15,7 +15,7 @@ $table = new ProductsTable(new MySQL());
 $table1 = new OrdersTable(new MySQL());
 $id = $_GET['id'];
 
-$orderDetail = $table1->getOrderDetail($id);
+$orderDetails = $table1->getOrderDetail($id);
 
 ?>
 
@@ -38,27 +38,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <link rel="stylesheet" href="dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../css/datatables.css">
 </head>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                  <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-           
         </nav>
+
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
@@ -195,6 +187,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </a>
                                 </li>
                             </ul>
+                            <li class="nav-item">
+                  <a href="weekly_report.php" class="nav-link">
+                    <i class="nav-icon fas fa-table"></i>
+                    <p>Reports</p>
+                    <i class="fas fa-angle-left right"></i>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="weekly_report.php" class="nav-link">
+                        <i class="nav-icon fas fa-sort-amount-up"></i>
+                        <p>Weekly Report</p>
+                      </a>
+                    <li class="nav-item">
+                      <a href="monthly_report.php" class="nav-link">
+                        <i class="nav-icon fas fa-jedi"></i>
+                        <p>Monthly Report</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="top_customer.php" class="nav-link">
+                        <i class="nav-icon fas fa-heart"></i>
+                        <p>Platinum Members</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="best_seller.php" class="nav-link">
+                        <i class="nav-icon fas fa-money-bill-wave"></i>
+                        <p>Best Seller</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
                         </li>
                         <li class="nav-item">
                             <a href="actions/logout.php" class="nav-link">
@@ -229,7 +253,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div> -->
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <table class="table table-bordered table-striped">
+                                    <table class="table table-bordered table-striped" id="table">
                                         <thead>
                                             <tr>
                                                 <th><i class="fas fa-hashtag"></i></th>
@@ -239,12 +263,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $i = 1 ?>
+                                            <?php foreach($orderDetails as $orderDetail) : ?>
                                                 <tr>
-                                                    <td><?= $orderDetail->id ?> </td>
+                                                    <td><?= $i ?> </td>
                                                     <td><?= $table->h($orderDetail->Pname) ?></td>
                                                     <td><?= $table->h($orderDetail->quantity) ?></td>
                                                     <td><?= $table->h(date("Y-m-d"),strtotime($orderDetail->order_date)) ?></td>
                                                 </tr>
+                                                <?php $i++ ?>
+                                            <?php endforeach ?>    
                                         </tbody>
                                     </table>
                                     <div class="float-right">
@@ -268,6 +296,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- jQuery -->
         <script src="plugins/jquery/jquery.min.js"></script>
+        <script src="../css/datatables.js"></script>
+        <script>
+            $(document).ready(function (){
+                $("#table").dataTable();
+            })
+        </script>
         <!-- Bootstrap 4 -->
         <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="dist/js/bootstrap.bundle.min.js"></script>

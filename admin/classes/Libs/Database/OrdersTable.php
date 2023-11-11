@@ -36,12 +36,13 @@ class OrdersTable{
 
     public function getOrderDetail($id){
         try {
-            $query = "SELECT sale_orders_details.*, products.name as Pname FROM sale_orders_details LEFT JOIN products ON sale_orders_details.product_id = products.id WHERE sale_orders_details.id = :id;";
+            $query = "SELECT sale_orders_details.*, products.name as Pname FROM sale_orders_details LEFT JOIN products ON sale_orders_details.product_id = products.id WHERE sale_orders_details.sale_order_id = :id;";
             $statement = $this->db->prepare($query);
             $statement->execute([
                 ':id' => $id,
             ]);
-            return $statement->fetch() ?? false;
+            $row = $statement->fetchAll();
+            return $row ?? false;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -77,4 +78,60 @@ class OrdersTable{
             echo $e->getMessage();
         }
     }
+
+    public function weeklyOrderReport($fromDate, $toDate){
+        try {
+            $query = "SELECT sale_orders.*,users.name as userName FROM `sale_orders` LEFT JOIN users ON sale_orders.user_id = users.id  WHERE order_date < :fromDate AND order_date >= :toDate ORDER BY id DESC;";
+            $statement = $this->db->prepare($query);
+            $statement->execute([
+               ':fromDate' =>$fromDate,
+               ':toDate' =>$toDate,
+            ]);
+            $row = $statement->fetchAll();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function monthlyOrderReport($fromDate, $toDate){
+        try {
+            $query = "SELECT sale_orders.*,users.name as userName FROM `sale_orders` LEFT JOIN users ON sale_orders.user_id = users.id  WHERE order_date < :fromDate AND order_date >= :toDate ORDER BY id DESC;";
+            $statement = $this->db->prepare($query);
+            $statement->execute([
+               ':fromDate' =>$fromDate,
+               ':toDate' =>$toDate,
+            ]);
+            $row = $statement->fetchAll();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function topBuyer(){
+        try {
+            $query = "SELECT sale_orders.*,users.name as userName FROM `sale_orders` LEFT JOIN users ON sale_orders.user_id = users.id  GROUP BY sale_orders.user_id HAVING SUM(total_price) > 200 ORDER BY SUM(total_price) DESC;";
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            $row = $statement->fetchAll();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function bestSeller(){
+        try {
+            $query = "SELECT * FROM sale_orders_details LEFT JOIN products ON products.id = sale_orders_details.product_id GROUP BY sale_orders_details.product_id HAVING SUM(sale_orders_details.quantity) > 3 ORDER BY SUM(sale_orders_details.quantity) DESC;;";
+            $statement = $this->db->prepare($query);
+            $statement->execute();
+            $row = $statement->fetchAll();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+    
 }

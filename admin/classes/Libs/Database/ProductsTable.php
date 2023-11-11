@@ -117,6 +117,19 @@ class ProductsTable{
 
     public function editProduct($data){
         try {
+            $query = "UPDATE products SET name = :name, description = :description,category_id= :category_id, quantity = :quantity, price = :price WHERE id = :id;";
+            $statement = $this->db->prepare($query);
+            $statement->execute($data);
+
+            $row = $statement->rowCount();
+            return $row ?? false;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function editProductWithImage($data){
+        try {
             $query = "UPDATE products SET name = :name, description = :description,category_id= :category_id, quantity = :quantity, image = :image, price = :price WHERE id = :id;";
             $statement = $this->db->prepare($query);
             $statement->execute($data);

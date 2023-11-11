@@ -272,13 +272,13 @@ $<?= $product->price ?>
 <a href="#" class="btn-addwish-b2 dis-block pos-relative ">
 <!-- <img class="icon-heart1 dis-block trans-04 js-addwish-b2" src="images/icons/icon-heart-01.png" alt="ICON">
 <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON"> -->
-<form action="actions/addCart.php" method="post">
+<form action="actions/add_to_Bag.php" method="post">
 	<input type="hidden" name="id" value="<?= $product->id ?>">
 	<input type="hidden" name="cart" value="1">
 	<input type="hidden" name="csrf" value="<?= $token ?>">
 	<button type="submit">
-		<i class="fa fa-shopping-bag me-2  trans-04" ></i>
-		<i class="fas fa-shopping-bag  dis-block trans-04 ab-t-l me-2" ></i>
+		<i class="fa fa-shopping-bag me-2  trans-04 text-primary" ></i>
+		<i class="fas fa-shopping-bag  dis-block trans-04 ab-t-l me-2 text-primary" ></i>
 	</button>
 </form>
 </a>

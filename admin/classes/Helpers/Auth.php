@@ -3,7 +3,7 @@
 namespace Helpers;
 
 class Auth{
-    static $loginUrl = "/index.php";
+    static $loginUrl = "index.php";
 
     static function check() {
         session_start();
@@ -18,7 +18,7 @@ class Auth{
         session_start();
         if (isset($_SESSION['user'])) {
             if( $_SESSION['user']->role !== 1){
-             HTTP::redirect("/home.php");
+             HTTP::redirect("home.php");
             }
            return $_SESSION['user'];
         } else {

@@ -64,7 +64,7 @@ $_SESSION['csrf'] = $token;
 <div class="row">
 <div class="col-lg-6">
 <div class="login_box_img">
-<img class="img-fluid" src="images/product-05.jpg" alt>
+<img class="img-fluid" src="images/about-02.jpg" alt>
 <div class="hover">
 <h4>New to our website?</h4>
 <p>Welcome to our LWIN online shopping store.<br>Discover a world of convenience and endless choices as you explore our website.Happy shopping!</p>

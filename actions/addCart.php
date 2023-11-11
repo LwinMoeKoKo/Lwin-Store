@@ -26,7 +26,7 @@ if($_POST){
         } else{
             $_SESSION['cart']["id=$id"] = $cartQuantity;
         }
-        HTTP::redirect("home.php");
+        HTTP::redirect("product-detail.php","id=$id");
     } else {
         HTTP::redirect("product-detail.php","notEnough=true&id=$id");
     }

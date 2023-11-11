@@ -115,7 +115,7 @@ if($_POST){
   <div class="row">
   <div class="col-lg-6">
   <div class="login_box_img">
-  <img class="img-fluid" src="images/product-04.jpg" alt>
+  <img class="img-fluid" src="images/product-05.jpg" alt>
   <div class="hover">
   <h4>Already Have An Account?</h4>
   <p>Come Our Website and Enjoy The Products.</p>

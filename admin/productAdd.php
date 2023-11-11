@@ -28,17 +28,13 @@ if ($_POST) {
     }
     if (!($_POST['quantity'])) {
       $quantityNull = "Please fill the product quantity";
-    } elseif (is_int($_POST['quantity']) !== 1) {
-      $quantityNotInt = "Product Quantity should be integer value";
-    }
+    } 
     if (!($_POST['category'])) {
       $categoryNull = "Please select the product category";
     }
     if (!($_POST['price'])) {
       $priceNull = "Please fill the product price";
-    } elseif (is_int($_POST['price']) !== 1) {
-      $priceNotInt = "Product price should be integer value";
-    }
+    } 
     if (!($_FILES['image'])) {
       $imageNull = "Please fill the product image";
     }
@@ -47,44 +43,54 @@ if ($_POST) {
       $imgErr = "Product photo can not be uploaded.";
     }
   } else {
-    $table1->token();
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $category_id = $_POST['category'];
-    $quantity = $_POST['quantity'];
-    $price = $_POST['price'];
-    $imgName = $_FILES['image']['name'];
-    $imgTmp =  $_FILES['image']['tmp_name'];
-    $imgType =  $_FILES['image']['type'];
+    if (is_numeric($_POST['price']) != 1) {
+      $priceNotInt = "Product price should be integer value";
+    }
+    if (is_numeric($_POST['quantity']) != 1) {
+      $quantityNotInt = "Product Quantity should be integer value";
+    }
 
-    if (
-      $imgError && $imgType !== "image/jpeg"
-      && $imgType !== "image/jpg" && $imgType !== "png"
-    ) {
-      if ($imgError) {
-        $imgErr = "Product photo can not be uploaded.";
+    if($priceNotInt === null && $quantityNotInt === null){
+      $table1->token();
+      $name = $_POST['name'];
+      $description = $_POST['description'];
+      $category_id = $_POST['category'];
+      $quantity = $_POST['quantity'];
+      $price = $_POST['price'];
+      $imgName = $_FILES['image']['name'];
+      $imgTmp =  $_FILES['image']['tmp_name'];
+      $imgType =  $_FILES['image']['type'];
+  
+      if (
+        $imgError && $imgType !== "image/jpeg"
+        && $imgType !== "image/jpg" && $imgType !== "png"
+      ) {
+        if ($imgError) {
+          $imgErr = "Product photo can not be uploaded.";
+        }
+        if ($imgType !== "image/jpeg"  && $imgType !== "image/jpg" && $imgType !== "png") {
+          $imgTypeErr = "Product photo type must be jpeg,jpg or png.";
+        }
+      } else {
+        $table1->tokenCheck($token);
+        move_uploaded_file($imgTmp, "actions/photos/$imgName");
+  
+        $data = [
+          ':name' => $name,
+          ':description' => $description,
+          ':category_id' => $category_id,
+          ':quantity' => $quantity,
+          ':price' => $price,
+          ':image' => $imgName,
+        ];
+  
+        $table1->addProduct($data);
+        HTTP::redirect("admin/admin.php", "add=true");
       }
-      if ($imgType !== "image/jpeg"  && $imgType !== "image/jpg" && $imgType !== "png") {
-        $imgTypeErr = "Product photo type must be jpeg,jpg or png.";
-      }
-    } else {
-      $table1->tokenCheck($token);
-      move_uploaded_file($imgTmp, "actions/photos/$imgName");
-
-      $data = [
-        ':name' => $name,
-        ':description' => $description,
-        ':category_id' => $category_id,
-        ':quantity' => $quantity,
-        ':price' => $price,
-        ':image' => $imgName,
-      ];
-
-      $table1->addProduct($data);
-      HTTP::redirect("admin/admin.php", "add=true");
     }
   }
 }
+
 
 // print "<pre>";
 // print_r($id);
@@ -123,12 +129,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="index3.html" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contact</a>
         </li>
       </ul>
 
@@ -250,6 +250,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </ul>
             </li>
             <li class="nav-item">
+              <a href="weekly_report.php" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>Reports</p>
+                <i class="fas fa-angle-left right"></i>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="weekly_report.php" class="nav-link">
+                    <i class="nav-icon fas fa-sort-amount-up"></i>
+                    <p>Weekly Report</p>
+                  </a>
+                <li class="nav-item">
+                  <a href="monthly_report.php" class="nav-link">
+                    <i class="nav-icon fas fa-jedi"></i>
+                    <p>Monthly Report</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="top_customer.php" class="nav-link">
+                    <i class="nav-icon fas fa-heart"></i>
+                    <p>Platinum Members</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="best_seller.php" class="nav-link">
+                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                    <p>Best Seller</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
               <a href="actions/logout.php" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p>
@@ -330,7 +362,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <?php if (isset($priceNotInt)) : ?>
                             <p class="text-danger">*<?= $priceNotInt ?></p>
                           <?php endif ?>
-                          <input type="number" class="form-control" name="price" id="price">
+                          <div class="form-group">
+                            <div class="input-group-text">
+                              <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <input type="number" class="form-control" name="price" id="price">
+                          </div>
                         </div>
                         <?php if (isset($imageNull)) : ?>
                           <p class="text-danger">*<?= $imageNull ?></p>
